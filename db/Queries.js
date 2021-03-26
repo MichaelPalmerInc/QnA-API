@@ -7,6 +7,7 @@ mongoose.connect('mongodb://localhost/qna', {useNewUrlParser: true, useUnifiedTo
 
 
 var findQuestions = (productID, count, cb) => {
+  console.log(typeof(count));
   Questions.find({ "product_id" : `${productID}`}, (err, questions) => {
   if (err) {
     cb(err, null);
@@ -14,7 +15,7 @@ var findQuestions = (productID, count, cb) => {
     cb(null, questions)
   }
   }
-).lean().limit(count ? count : 5)}
+).limit(count ? Number(count) : 5).lean()}
 
 var findAnswers = (questionID, count, cb) => {
   Answers.find({'question_id': `${questionID}`}, (err, answers) => {
@@ -24,7 +25,7 @@ var findAnswers = (questionID, count, cb) => {
     cb(null, answers)
   }
   }
-).lean().limit(count ? count : 5)}
+).limit(count ? Number(count) : 5).lean()}
 
 var postQuestion = (productID, body, name, email, cb) => {
   Questions.create({"product_id": productID, "body": body, "name": name, "email": email}, (err, results) => {
